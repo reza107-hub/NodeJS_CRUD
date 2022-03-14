@@ -1,21 +1,112 @@
 const express = require('express');
+const { default: mongoose } = require('mongoose');
 const router = express.Router();
+const Student = require('../models/student');
 
 
 router.get('/',(req,res,next)=>{
- 
+    Student.find()
+    .then(result=>{
        
         res.status(200).json({
-            msg:'this is get request'
+            StudentData : result
+        })
+    })
+    .catch(err =>{
+       
+       console.log(err);
+       res.status(500).json({
+           error:err
+       })
+
+    })
+})
+
+router.get('/:id',(req,res,next)=>{
+    console.log(req.params.id);
+    Student.findById(req.params.id)
+    .then(result=>{
+        res.status(200).json({
+            StudentOne : result
+        })
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error:err
         })
     })
 
 
+})
+
+
     router.post('/',(req,res,next)=>{
- 
-       
-        res.status(200).json({
-            msg:'this is post request'
+   
+        const student =new Student({
+            _id:new mongoose.Types.ObjectId,
+            name:req.body.name,
+            email:req.body.email,
+            phone:req.body.phone,
+            gender:req.body.gender
+     
+     
+        })
+     
+        student.save()
+        .then(result=>{
+            console.log(result),
+            res.status(200).json({
+                StuentDetails:result
+            })
+        })
+        .catch(err=>{
+            console.log(err),
+            res.status(500).json({
+                error:err
+            })
+        })
+     
+     })
+
+     router.put('/:id',(req,res,next)=>{
+        console.log(req.params.id);
+        Student.findByIdAndUpdate({_id:req.params.id},{
+            $set:{
+              name:req.body.name,
+              email:req.body.email,
+              phone:req.body.phone,
+              gender:req.body.gender
+    
+            }
+        })
+        .then(result=>{
+            res.status(200).json({
+                UpdatedStuentInfo:result
+            })
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({
+                error:err
+            })
+        })
+    })
+
+
+
+
+     router.delete('/:id',(req,res,next)=>{
+        Student.remove({_id:req.params.id})
+        .then(result=>{
+            res.status(200).json({
+                message:'Student deleted',
+                result:result
+            })
+        })
+        .catch(err=>{
+            res.status(500).json({
+                error:err
+            })
         })
     })
 
