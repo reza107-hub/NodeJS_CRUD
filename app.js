@@ -1,4 +1,6 @@
 const express = require('express');
+const studentRoute = require('./api/routes/students');
+const userRoute = require('./api/routes/user');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -12,12 +14,12 @@ mongoose.connection.on('connected',connected=>{
     console.log('connected with database ');
 });
 
-const studentRoute = require('./api/routes/students');
 
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use('/students',studentRoute);
+app.use('/user',userRoute);
 
 app.use((req,res,next)=>{
     res.status(404).json({
