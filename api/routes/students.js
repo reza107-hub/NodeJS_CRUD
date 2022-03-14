@@ -92,6 +92,27 @@ router.get('/:id',(req,res,next)=>{
         })
     })
 
+    router.patch('/:studentId',(req,res,next)=>{
+
+        const id = req.params.studentId;
+        const updateOps={};
+    
+        for(const info of req.body){
+            updateOps[info.key]=info.value;
+        }
+        Student.updateOne({_id:id},{$set : updateOps})
+        
+        .exec()
+        .then(result=>res.status(200).json(result))
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({
+                error:err
+            })
+        })
+    })
+    
+
 
 
 
