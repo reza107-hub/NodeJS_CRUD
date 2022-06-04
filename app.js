@@ -5,7 +5,7 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-mongoose.connect('mongodb+srv://sbs:reza@sbs.l1fh8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://reza:reza@cluster0.l1fh8.mongodb.net/?retryWrites=true&w=majority');
 mongoose.connection.on('error',err=>{
     console.log('connection failed');
 });
